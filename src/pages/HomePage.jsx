@@ -1,36 +1,58 @@
-import React, {useState} from 'react'
+
+  import React, {useState} from 'react'
 
 
 
 const HomePage = () => {
-  const [input,setInput]=useState([])
+	const [input,setInput]=useState('')
+	const [operator,setOperator]=useState()
+	const [first, setFirst]=useState(false)
+	const [runningValue,setRunningValue]=useState()
+
   
   
   const inputClicked=(inp)=>{
   setInput(prev=>{
-      return prev + inp
+		if (first) {
+			setFirst(false)
+			return inp.toString()
+		} else {
+			return prev + inp.toString()
+		}
   })
 }
 
 
+const operand=(op) =>{
+	
+	console.log(op)
+setOperator(op)
+setRunningValue(input)
+setFirst(true)
+let rt=calculate(op)
+// setRunningValue(rt)
+setInput('')
+}
 
 const calculate =()=>{
   console.log("calculating")
-  if (input[1]==="-") {
+  if (operator==="-") {
     console.log("yes")
-    setInput(parseInt(input[0])-parseInt(input[2]))
-  } else if (input[1]==="+"){
-    setInput(parseInt(input[0])+parseInt(input[2]))
-  } else if (input[1]==="*"){
-    setInput(parseInt(input[0])*parseInt(input[2]))
-  } else if (input[1]==="/"){
-    setInput(parseInt(input[0])/parseInt(input[2]))
-  }
+    setInput(parseInt(runningValue)-parseInt(input))
+  } else if (operator==="+"){
+    setInput(parseInt(runningValue)+parseInt(input))
+  } else if (operator==="*"){
+    setInput(parseInt(runningValue)*parseInt(input))
+  } else if (operator==="/"){
+    setInput(parseInt(runningValue)/parseInt(input))
+	}
+	
 }
 
 const clearState=()=>{
-  
-  setInput([])
+  setOperator('')
+	setInput('')
+	setRunningValue('')
 }
   return(
 
@@ -47,7 +69,7 @@ const clearState=()=>{
     <button id="clear-button" onClick={()=>clearState()}>clear</button>
   </li>
   <li>
-    <button onClick={()=>inputClicked("/")}>/</button>
+    <button onClick={()=>operand("/")}>/</button>
   </li>
   </section>
   <section className="top-row">
@@ -61,7 +83,7 @@ const clearState=()=>{
     <button onClick={()=>inputClicked(9)}>9</button>
   </li>
   <li>
-    <button onClick={()=>inputClicked("-")}>-</button>
+    <button onClick={()=>operand("-")}>-</button>
   </li>
   </section>
   <section className="middle-row">
@@ -75,7 +97,7 @@ const clearState=()=>{
     <button onClick={()=>inputClicked(6)}>6</button>
   </li>
   <li>
-    <button onClick={()=>inputClicked("+")}>+</button>
+    <button onClick={()=>operand("+")}>+</button>
   </li>
   </section>
   <section className="bottom-row">
